@@ -30,7 +30,7 @@ public class UserController {
         String password = request.getParameter("password");
 
         if (userService.createUserWithRawPassword(new User(userId, password)) == null) {
-            response.setStatus(404);
+            response.setStatus(403);
             return null;
         }
 
