@@ -2,6 +2,7 @@
 | Code | Content | Description |
 |------|---------|-------------|
 |200|OK|请求成功|
+|400|FAILED|用户名已存在|
 |403|FORBIDDEN|用户名不是手机号|
 
 URI:

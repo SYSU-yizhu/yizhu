@@ -20,6 +20,9 @@ public class UserService {
     public UserService() {
     }
 
+    public User findOne(String userId) {
+        return userRepo.findOne(userId);
+    }
 
     public User checkUserWithRawPassword(String userId, String rawPassword) {
         String md5Password = MD5Parser.getMD5(rawPassword);

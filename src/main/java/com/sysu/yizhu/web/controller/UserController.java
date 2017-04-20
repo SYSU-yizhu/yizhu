@@ -29,6 +29,10 @@ public class UserController {
         String userId = request.getParameter("userId");
         String password = request.getParameter("password");
 
+        if (userService.findOne(userId) != null) {
+            response.setStatus(400);
+            return null;
+        }
         if (userService.createUserWithRawPassword(new User(userId, password)) == null) {
             response.setStatus(403);
             return null;
