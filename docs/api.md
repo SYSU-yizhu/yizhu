@@ -1,9 +1,38 @@
+### 注册前发送短信验证码
+| Code | Content | Description |
+|------|---------|-------------|
+|200|OK|请求成功|
+|400|FAILED|手机号已存在|
+|403|FORBIDDEN|手机号（用户名）无效|
+
+URI:
+
+```
+GET /user/sendSms/:userId
+```
+
+GET参数
+
+| 字段 | 描述 | 类型 |
+|----------|-------------|------|
+|userId|用户名（手机号）|string|
+
+
+成功例子：
+
+```json
+{
+	"userId":"11111111111"
+}
+```
+
 ### 注册
 | Code | Content | Description |
 |------|---------|-------------|
 |200|OK|请求成功|
 |400|FAILED|用户名已存在|
 |403|FORBIDDEN|用户名不是手机号|
+|450|MISS|验证码错误|
 
 URI:
 
@@ -17,6 +46,7 @@ POST参数
 |----------|-------------|------|
 |userId|用户名（手机号）|string|
 |password|密码（未处理）|string|
+|code|短信验证码|string|
 
 
 成功例子：
@@ -45,14 +75,13 @@ POST参数
 | 字段 | 描述 | 类型 |
 |----------|-------------|------|
 |userId|用户名（手机号）|string|
-|password|密码（未MD5处理）|string|
+|password|密码（未处理）|String|
 
 
 成功例子：
 ```json
 {
-	"userId":"11111111111",
-	"password":"tZxnvxlqR1gZHkL3ZnDOug=="
+	"userId":"11111111111"
 }
 ```
 

@@ -2,12 +2,15 @@ package com.sysu.yizhu.util;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
@@ -40,6 +43,55 @@ public class SmsUtil {
         headers.add("X-LC-Id", id);
         headers.add("X-LC-Key", key);
         headers.setContentType(MediaType.APPLICATION_JSON);
+    }
+
+    public boolean sendSmsCode(String phoneNum) {
+        try {
+            String body = new ReqSmsParam(phoneNum).toJSON();
+            HttpEntity<String> reqEntity = new HttpEntity<String>(body, headers);
+            String res = restTemplate.postForObject(URL_SMS_SEND, reqEntity, String.class);
+            LOG.info("sendSmsCode() res: " + res);
+            return true;
+        } catch (HttpClientErrorException e) {
+            LOG.error("sendSmsCode() res: " + e.getMessage());
+            LOG.error("sendSmsCode() res: " + e.getResponseBodyAsString());
+            return false;
+        }
+    }
+
+    public boolean checkSmsCode(String phoneNum, String code) {
+        try {
+            String url = URL_SMS_CHECK + "/" + code + "?mobilePhoneNumber=" + phoneNum;
+            HttpEntity<String> reqEntity = new HttpEntity<String>(headers);
+            String res = restTemplate.postForObject(url, reqEntity, String.class);
+            LOG.info("checkSmsCode() res: " + res);
+            return true;
+        } catch (HttpClientErrorException e) {
+            LOG.error("checkSmsCode() res: " + e.getMessage());
+            LOG.error("checkSmsCode() res: " + e.getResponseBodyAsString());
+            return false;
+        }
+    }
+
+    /**
+     * 发送短信参数设置
+     */
+    private class ReqSmsParam {
+        private String mobilePhoneNumber;
+        private int ttl = 2;
+        private String op = "手机号验证";
+
+        private ReqSmsParam(String phone) {
+            mobilePhoneNumber = phone;
+        }
+
+        private String toJSON() {
+            try {
+                return mapper.writeValueAsString(this);
+            } catch (JsonProcessingException e) {
+                return null;
+            }
+        }
     }
 
 }

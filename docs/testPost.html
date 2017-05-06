@@ -11,6 +11,7 @@
 			<div>
 				<span>user-id </span><input name='userId' id='userId'><br>
 				<span>password </span><input name='password' id='password'><br>
+				<span>code </span><input name='code' id='code'><br>
 			</div>
 			<div>
 				<button>submit</button>
@@ -32,15 +33,8 @@
 	</div>
 
 	<div>
-		<h2>login</h2>
-		<form action='http://localhost:8080/resource/sms/15622743170/check' method='post' accept-charset="UTF-8">
-			<div>
-				<span>code</span><input name='code' id='code'><br>
-			</div>
-			<div>
-				<button>submit</button>
-			</div>
-		</form>
+		<h2>send sms:</h2>
+		<p>http://localhost:8080/user/sendSms/ + 手机号</p>
 	</div>
 </body>
 </html>
