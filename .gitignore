@@ -9,3 +9,4 @@ log.txt
 *.gz
 *.out
 *.tar
+src/main/resources/leancloud.properties

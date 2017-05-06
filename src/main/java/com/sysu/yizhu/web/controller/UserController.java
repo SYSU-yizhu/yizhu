@@ -2,6 +2,7 @@ package com.sysu.yizhu.web.controller;
 
 import com.sysu.yizhu.business.entities.User;
 import com.sysu.yizhu.business.services.UserService;
+import com.sysu.yizhu.util.SmsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SmsUtil smsUtil;
 
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     @ResponseBody
