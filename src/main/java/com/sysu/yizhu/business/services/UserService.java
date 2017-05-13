@@ -1,6 +1,7 @@
 package com.sysu.yizhu.business.services;
 
 import com.sysu.yizhu.business.entities.User;
+import com.sysu.yizhu.business.entities.repositories.CommentRepository;
 import com.sysu.yizhu.business.entities.repositories.UserRepository;
 import com.sysu.yizhu.util.MD5Parser;
 import org.hibernate.exception.ConstraintViolationException;
@@ -16,6 +17,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepo;
+
+    @Autowired
+    private CommentRepository commentRepo;
 
     public UserService() {
     }
