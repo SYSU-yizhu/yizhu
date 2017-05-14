@@ -44,13 +44,13 @@
                 <!-- Hibernate config -->
                 <!-- Dialect could be DIY -->
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
-                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.hbm2ddl.auto">create-drop</prop>
                 <!-- Show the sqls in console -->
                 <prop key="hibernate.show_sql">true</prop>
 
                 <!-- Use c3p0 as connection pool -->
                 <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
-                <prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/yizhu?createDatabaseIfNotExist=true&amp;useSSL=false</prop>
+                <prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/yizhu_test?createDatabaseIfNotExist=true&amp;useSSL=false</prop>
                 <prop key="hibernate.connection.username">root</prop>
                 <prop key="hibernate.connection.password">123456</prop>
 

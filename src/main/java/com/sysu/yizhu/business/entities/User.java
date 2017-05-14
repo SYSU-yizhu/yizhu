@@ -27,7 +27,6 @@ public class User {
 
     @Id
     @Column(name="user_id", length = 11, nullable = false)
-    @Pattern(regexp = "[0-9]{11}")
     public String getUserId() {
         return userId;
     }

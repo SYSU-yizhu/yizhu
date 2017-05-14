@@ -38,21 +38,8 @@ public class UserService {
     }
 
     public User createUserWithRawPassword(User user) {
+        if (userRepo.findOne(user.getUserId()) != null) return null;
         user.setPassword(MD5Parser.getMD5(user.getPassword()));
-
-        User olduser = null;
-        try {
-            olduser = userRepo.save(user);
-        } catch (Exception e) {
-            Throwable t = e.getCause();
-            while ((t != null) && !(t instanceof ConstraintViolationException)) {
-                t = t.getCause();
-            }
-            if (t instanceof ConstraintViolationException) {
-                System.out.println("123");
-            }
-        }
-
-        return olduser;
+        return userRepo.save(user);
     }
 }
