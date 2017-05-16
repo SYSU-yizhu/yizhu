@@ -30,7 +30,6 @@ public class UserService {
 
     public User checkUserWithRawPassword(String userId, String rawPassword) {
         String md5Password = MD5Parser.getMD5(rawPassword);
-
         User user = userRepo.findOne(userId);
         if (user == null || !user.getPassword().equals(md5Password)) return null;
 

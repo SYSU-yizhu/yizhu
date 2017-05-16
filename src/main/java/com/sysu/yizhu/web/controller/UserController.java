@@ -8,14 +8,13 @@ import com.sysu.yizhu.util.SmsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Date;
 
 /**
  * Created by CrazeWong on 2017/4/15.
@@ -50,12 +49,15 @@ public class UserController {
     }
 
 
-    @RequestMapping(path = "/register", method = RequestMethod.POST)
+    @RequestMapping(path = "/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ReturnMsg register(HttpServletRequest request, HttpServletResponse response) {
-        String userId = request.getParameter("userId");
-        String password = request.getParameter("password");
-        String code = request.getParameter("code");
+    public ReturnMsg register(@RequestParam("userId") String userId,
+                              @RequestParam("password") String password,
+                              @RequestParam("code") String code,
+                              @RequestParam("name") String name,
+                              @RequestParam("gender") String gender,
+                              @RequestParam("birthDate") String birthDate,
+                              @RequestParam("location") String location, HttpServletRequest request, HttpServletResponse response) {
 
         if (!PhoneNumUtil.isPhone(userId)) {
             response.setStatus(403);
@@ -66,7 +68,21 @@ public class UserController {
         } else if (!smsUtil.checkSmsCode(userId, code)) {
             response.setStatus(450);
             return null;
-        } else if (userService.createUserWithRawPassword(new User(userId, password)) == null) {
+        }
+        User user = new User();
+        try {
+            user.setBirthDate(Date.valueOf(birthDate));
+            user.setUserId(userId);
+            user.setPassword(password);
+            user.setName(name);
+            user.setGender(gender);
+            user.setLocation(location);
+        } catch (IllegalArgumentException e) {
+            response.setStatus(403);
+            return null;
+        }
+
+        if (userService.createUserWithRawPassword(user) == null) {
             response.setStatus(403);
             return null;
         }
@@ -79,10 +95,13 @@ public class UserController {
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public ReturnMsg login(HttpServletRequest request, HttpServletResponse response) {
-        String userId = request.getParameter("userId");
-        String password = request.getParameter("password");
+    public ReturnMsg login(@RequestParam("userId") String userId,
+                           @RequestParam("password") String password, HttpServletRequest request, HttpServletResponse response) {
 
+        if (!PhoneNumUtil.isPhone(userId)) {
+            response.setStatus(403);
+            return null;
+        }
         User user = userService.checkUserWithRawPassword(userId, password);
         if (user == null) {
             response.setStatus(404);
@@ -90,6 +109,68 @@ public class UserController {
         }
         ReturnMsg result = new ReturnMsg();
         result.put("userId", userId);
+        return result;
+    }
+
+    @RequestMapping(path = "/modifyInfo", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ReturnMsg modifyInfo(@RequestParam("userId") String userId,
+                              @RequestParam("password") String password,
+                              @RequestParam("name") String name,
+                              @RequestParam("gender") String gender,
+                              @RequestParam("birthDate") String birthDate,
+                              @RequestParam("location") String location, HttpServletRequest request, HttpServletResponse response) {
+
+        if (!PhoneNumUtil.isPhone(userId)) {
+            response.setStatus(403);
+            return null;
+        }
+        User user = userService.checkUserWithRawPassword(userId, password);
+        if (user == null) {
+            response.setStatus(404);
+            return null;
+        }
+        try {
+            if (!(gender.equals("male") || gender.equals("female"))) {
+                throw new IllegalArgumentException("Gender invalid.");
+            }
+            user.setBirthDate(Date.valueOf(birthDate));
+            user.setName(name);
+            user.setGender(gender);
+            user.setLocation(location);
+        } catch (IllegalArgumentException e) {
+            response.setStatus(403);
+            return null;
+        }
+
+        response.setStatus(200);
+        ReturnMsg result = new ReturnMsg();
+        result.put("userId", userId);
+        return result;
+    }
+
+    @RequestMapping(path = "/info", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ReturnMsg info(@RequestParam("userId") String userId,
+                                @RequestParam("password") String password, HttpServletRequest request, HttpServletResponse response) {
+
+        if (!PhoneNumUtil.isPhone(userId)) {
+            response.setStatus(403);
+            return null;
+        }
+        User user = userService.checkUserWithRawPassword(userId, password);
+        if (user == null) {
+            response.setStatus(404);
+            return null;
+        }
+
+        response.setStatus(200);
+        ReturnMsg result = new ReturnMsg();
+        result.put("userId", user.getUserId());
+        result.put("name", user.getName());
+        result.put("gender", user.getGender());
+        result.put("birthDate", user.getBirthDate().toString());
+        result.put("location", user.getLocation());
         return result;
     }
 }
