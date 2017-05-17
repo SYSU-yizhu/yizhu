@@ -13,14 +13,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/question")
@@ -97,7 +95,7 @@ public class QuestionController {
         return result;
     }
 
-    @RequestMapping(path = "/agreeAnswer", method = RequestMethod.POST)
+    @RequestMapping(path = "/agreeAnswer", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ReturnMsg agreeAnswer(@RequestParam("userId") String userId,
                                @RequestParam("password") String password,
@@ -120,10 +118,80 @@ public class QuestionController {
         }
         AnswerAgree aa = questionService.setAgreement(agreeOrNot, user, answer);
 
+        response.setStatus(200);
         ReturnMsg result = new ReturnMsg();
         result.put("answerAgreeId", aa.getAnswerAgreeId());
         return result;
     }
 
+    @RequestMapping(path = "/getAllId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ReturnMsg getAllId(HttpServletRequest request, HttpServletResponse response) {
+        List<Integer> data = questionService.getAllQuestionId();
 
+        response.setStatus(200);
+        ReturnMsg result = new ReturnMsg();
+        result.put("count", data.size());
+        result.put("data", data);
+        return result;
+    }
+
+    @RequestMapping(path = "/digest/{questionId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ReturnMsg getDigest(@PathVariable Integer questionId, HttpServletRequest request, HttpServletResponse response) {
+        Question question = questionService.getQuestionDigestById(questionId);
+        if (question == null) {
+            response.setStatus(404);
+            return null;
+        }
+
+        response.setStatus(200);
+        ReturnMsg result = new ReturnMsg();
+        result.put("questionId", question.getQuestionId());
+        result.put("userId", question.getAskUser().getUserId());
+        result.put("userName", question.getAskUser().getName());
+        result.put("title", question.getTitle());
+        result.put("createDate", question.getCreateDate().toString());
+
+        return result;
+    }
+
+    @RequestMapping(path = "/getAnswerIds/{questionId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ReturnMsg getAnswers(@PathVariable Integer questionId, HttpServletRequest request, HttpServletResponse response) {
+        List<Integer> data = questionService.getAllAnswerIdByQuestionId(questionId);
+        if (data.size() == 0) {
+            response.setStatus(404);
+            return null;
+        }
+
+        response.setStatus(200);
+        ReturnMsg result = new ReturnMsg();
+        result.put("count", data.size());
+        result.put("data", data);
+
+        return result;
+    }
+
+    @RequestMapping(path = "/getAnswer/{answerId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ReturnMsg getAnswer(@PathVariable Integer answerId, HttpServletRequest request, HttpServletResponse response) {
+        Answer answer = questionService.getAnswerByIdWithUser(answerId);
+        if (answer == null) {
+            response.setStatus(404);
+            return null;
+        }
+
+        response.setStatus(200);
+        ReturnMsg result = new ReturnMsg();
+        result.put("answerId", answer.getAnswerId());
+        result.put("userId", answer.getAnswerUser().getUserId());
+        result.put("userName", answer.getAnswerUser().getName());
+        result.put("content", answer.getContent());
+        result.put("createDate", answer.getCreateDate().toString());
+        result.put("good", answer.getGood());
+        result.put("bad", answer.getBad());
+
+        return result;
+    }
 }

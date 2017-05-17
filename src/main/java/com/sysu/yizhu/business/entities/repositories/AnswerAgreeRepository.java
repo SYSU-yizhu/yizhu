@@ -6,6 +6,5 @@ import com.sysu.yizhu.business.entities.User;
 import org.springframework.data.repository.CrudRepository;
 
 public interface AnswerAgreeRepository extends CrudRepository<AnswerAgree, Integer> {
-
     AnswerAgree findByUserAndAnswer(User user, Answer answer);
 }

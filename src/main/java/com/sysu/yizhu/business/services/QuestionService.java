@@ -50,14 +50,37 @@ public class QuestionService {
             aa = new AnswerAgree();
             aa.setAnswer(answer);
             aa.setUser(user);
+        } else {
+            if (aa.getType() == Boolean.TRUE) {
+                answer.setGood(answer.getGood()-1);
+            } else {
+                answer.setBad(answer.getBad()-1);
+            }
+        }
+        if (agreeOrNot == Boolean.TRUE) {
+            answer.setGood(answer.getGood()+1);
+        } else {
+            answer.setBad(answer.getBad()+1);
         }
         aa.setType(agreeOrNot);
         answerAgreeRepo.save(aa);
         return aa;
     }
 
-    public List<Question> getAllQuestion() {
-        return questionRepo.findAllDigest();
+    public List<Integer> getAllQuestionId() {
+        return questionRepo.findAllId();
+    }
+
+    public Question getQuestionDigestById(Integer questionId) {
+        return questionRepo.findDigestById(questionId);
+    }
+
+    public List<Integer> getAllAnswerIdByQuestionId(Integer questionId) {
+        return answerRepo.findByQuestionId(questionId);
+    }
+
+    public Answer getAnswerByIdWithUser(Integer answerId) {
+        return answerRepo.findByAnswerIdWithUser(answerId);
     }
 
 }

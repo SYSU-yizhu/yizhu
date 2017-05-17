@@ -1,4 +1,6 @@
-# 用户类
+
+
+# 一、用户类
 <br>
 ## 注册前发送短信验证码
 | Code | Content | Description |
@@ -161,7 +163,7 @@ POST参数
 ```
 
 <br>
-# 提问类
+# 二、提问类
 <br>
 ## 提问
 | Code | Content | Description |
@@ -252,6 +254,101 @@ POST参数
 ```json
 {
 	"answerAgreeId":1
+}
+```
+
+<br>
+## 获取所有问题Id
+| Code | Content | Description |
+|------|---------|-------------|
+|200|OK|请求成功
+
+URI:
+
+```
+GET /question/getAllId
+```
+
+
+成功例子：
+```json
+{
+	"count":2,
+	"data":[1,2]
+}
+```
+
+
+<br>
+## 根据问题Id获取问题摘要
+| Code | Content | Description |
+|------|---------|-------------|
+|200|OK|请求成功|
+|404|NOT FOUND| questionId不存在|
+
+URI:
+
+```
+GET /question/digest/{questionId}
+```
+
+
+成功例子：
+```json
+{
+	"questionId":1,
+	"userId":"133133123456",
+	"userName":"张三",
+	"title":"扶老奶奶过马路是一种怎样的体验？",
+	"createDate":"2017-05-17"
+}
+```
+
+<br>
+## 根据问题Id获取回答所有Id
+| Code | Content | Description |
+|------|---------|-------------|
+|200|OK|请求成功|
+|404|NOT FOUND| questionId不存在|
+
+URI:
+
+```
+GET /question/getAnswerIds/{questionId}
+```
+
+
+成功例子：
+```json
+{
+	"count":2,
+	"data":[1,2]
+}
+```
+<br>
+## 根据回答Id获取回答内容
+| Code | Content | Description |
+|------|---------|-------------|
+|200|OK|请求成功|
+|404|NOT FOUND|answerId不存在|
+
+URI:
+
+```
+GET /question/getAnswer/{answerId}
+```
+
+
+成功例子：
+```json
+{
+	"questionId":1,
+	"userId":"133133123456",
+	"userName":"张三",
+	"content":"无可奉告",
+	"createDate":"2017-05-17"
+	"good":5,
+	"bad":30
 }
 ```
 

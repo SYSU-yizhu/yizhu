@@ -5,7 +5,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>470</x>
-      <y>140</y>
+      <y>100</y>
       <w>300</w>
       <h>170</h>
     </coordinates>
@@ -25,7 +25,7 @@ PK    user_id: VARCHAR(11) NOT NULL
     <id>UMLClass</id>
     <coordinates>
       <x>120</x>
-      <y>40</y>
+      <y>0</y>
       <w>270</w>
       <h>150</h>
     </coordinates>
@@ -46,7 +46,7 @@ Note:
     <id>Relation</id>
     <coordinates>
       <x>380</x>
-      <y>150</y>
+      <y>110</y>
       <w>110</w>
       <h>40</h>
     </coordinates>
@@ -58,7 +58,7 @@ user_id</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>750</x>
-      <y>410</y>
+      <y>320</y>
       <w>270</w>
       <h>130</h>
     </coordinates>
@@ -75,7 +75,7 @@ FK       ask_user: user_id
     <id>UMLClass</id>
     <coordinates>
       <x>620</x>
-      <y>570</y>
+      <y>480</y>
       <w>260</w>
       <h>160</h>
     </coordinates>
@@ -94,7 +94,7 @@ FK    question_id: question_id
     <id>Relation</id>
     <coordinates>
       <x>810</x>
-      <y>530</y>
+      <y>440</y>
       <w>100</w>
       <h>60</h>
     </coordinates>
@@ -106,31 +106,31 @@ question_id</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>750</x>
-      <y>300</y>
+      <y>260</y>
       <w>80</w>
-      <h>130</h>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=-
 user_id</panel_attributes>
-    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>650</x>
-      <y>300</y>
+      <y>260</y>
       <w>80</w>
-      <h>290</h>
+      <h>240</h>
     </coordinates>
     <panel_attributes>lt=-
 user_id</panel_attributes>
-    <additional_attributes>10.0;270.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;220.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>270</x>
-      <y>570</y>
+      <y>480</y>
       <w>260</w>
       <h>160</h>
     </coordinates>
@@ -146,19 +146,19 @@ FK          answer_id: question_id
     <id>Relation</id>
     <coordinates>
       <x>510</x>
-      <y>300</y>
+      <y>260</y>
       <w>80</w>
-      <h>290</h>
+      <h>240</h>
     </coordinates>
     <panel_attributes>lt=-
 user_id</panel_attributes>
-    <additional_attributes>10.0;270.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;220.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>520</x>
-      <y>610</y>
+      <y>520</y>
       <w>120</w>
       <h>40</h>
     </coordinates>
