@@ -1,7 +1,7 @@
 
 
 # 一、用户类
-<br>
+
 ## 注册前发送短信验证码
 | Code | Content | Description |
 |------|---------|-------------|
@@ -30,7 +30,6 @@ GET参数
 }
 ```
 
-<br>
 ## 注册
 | Code | Content | Description |
 |------|---------|-------------|
@@ -66,7 +65,6 @@ POST参数
 }
 ```
 
-<br>
 ## 登录
 | Code | Content | Description |
 |------|---------|-------------|
@@ -95,7 +93,6 @@ POST参数
 }
 ```
 
-<br>
 ## 修改个人信息
 | Code | Content | Description |
 |------|---------|-------------|
@@ -128,7 +125,7 @@ POST参数
 	"userId":"11111111111"
 }
 ```
-<br>
+
 ## 获取个人信息
 | Code | Content | Description |
 |------|---------|-------------|
@@ -162,9 +159,9 @@ POST参数
 }
 ```
 
-<br>
+
 # 二、提问类
-<br>
+
 ## 提问
 | Code | Content | Description |
 |------|---------|-------------|
@@ -194,7 +191,6 @@ POST参数
 }
 ```
 
-<br>
 ## 回答
 | Code | Content | Description |
 |------|---------|-------------|
@@ -226,7 +222,6 @@ POST参数
 }
 ```
 
-<br>
 ## 赞同
 | Code | Content | Description |
 |------|---------|-------------|
@@ -257,7 +252,6 @@ POST参数
 }
 ```
 
-<br>
 ## 获取所有问题Id
 | Code | Content | Description |
 |------|---------|-------------|
@@ -278,8 +272,6 @@ GET /question/getAllId
 }
 ```
 
-
-<br>
 ## 根据问题Id获取问题摘要
 | Code | Content | Description |
 |------|---------|-------------|
@@ -304,7 +296,6 @@ GET /question/digest/{questionId}
 }
 ```
 
-<br>
 ## 根据问题Id获取回答所有Id
 | Code | Content | Description |
 |------|---------|-------------|
@@ -325,7 +316,7 @@ GET /question/getAnswerIds/{questionId}
 	"data":[1,2]
 }
 ```
-<br>
+
 ## 根据回答Id获取回答内容
 | Code | Content | Description |
 |------|---------|-------------|
