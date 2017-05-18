@@ -138,6 +138,7 @@ public class UserController {
             user.setName(name);
             user.setGender(gender);
             user.setLocation(location);
+            userService.updateUserInfo(user);
         } catch (IllegalArgumentException e) {
             response.setStatus(403);
             return null;

@@ -41,4 +41,8 @@ public class UserService {
         user.setPassword(MD5Parser.getMD5(user.getPassword()));
         return userRepo.save(user);
     }
+
+    public void updateUserInfo(User user) {
+        userRepo.save(user);
+    }
 }

@@ -337,7 +337,7 @@ GET /question/getAnswer/{answerId}
 	"userId":"133133123456",
 	"userName":"张三",
 	"content":"无可奉告",
-	"createDate":"2017-05-17"
+	"createDate":"2017-05-17",
 	"good":5,
 	"bad":30
 }
