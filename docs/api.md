@@ -333,7 +333,7 @@ GET /question/getAnswer/{answerId}
 成功例子：
 ```json
 {
-	"questionId":1,
+	"answerId":1,
 	"userId":"133133123456",
 	"userName":"张三",
 	"content":"无可奉告",

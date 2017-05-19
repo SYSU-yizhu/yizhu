@@ -88,10 +88,11 @@ public class QuestionController {
         answer.setAnswerUser(user);
         answer.setBad(0);
         answer.setGood(0);
+        questionService.createAnswer(answer);
 
         response.setStatus(200);
         ReturnMsg result = new ReturnMsg();
-        result.put("questionId", question.getQuestionId());
+        result.put("answerId", answer.getAnswerId());
         return result;
     }
 

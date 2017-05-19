@@ -10,6 +10,7 @@ import com.sysu.yizhu.business.entities.repositories.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -37,7 +38,7 @@ public class QuestionService {
     }
 
     public Answer createAnswer(Answer answer) {
-        if (answer.getQuestion().getQuestionId() != null) {
+        if (answer.getQuestion().getQuestionId() == null) {
             return null;
         }
         answerRepo.save(answer);
@@ -63,6 +64,7 @@ public class QuestionService {
             answer.setBad(answer.getBad()+1);
         }
         aa.setType(agreeOrNot);
+        answerRepo.save(answer);
         answerAgreeRepo.save(aa);
         return aa;
     }
@@ -72,7 +74,18 @@ public class QuestionService {
     }
 
     public Question getQuestionDigestById(Integer questionId) {
-        return questionRepo.findDigestById(questionId);
+        List<Object[]> objs = questionRepo.findDigestById(questionId);
+        Question question = new Question();
+        User askUser = new User();
+        askUser.setUserId((String) objs.get(0)[1]);
+        askUser.setName((String) objs.get(0)[2]);
+
+        question.setQuestionId((Integer) objs.get(0)[0]);
+
+        question.setAskUser(askUser);
+        question.setTitle((String) objs.get(0)[3]);
+        question.setCreateDate((Date) objs.get(0)[4]);
+        return question;
     }
 
     public List<Integer> getAllAnswerIdByQuestionId(Integer questionId) {

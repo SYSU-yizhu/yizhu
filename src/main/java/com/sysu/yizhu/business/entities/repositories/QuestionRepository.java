@@ -17,6 +17,6 @@ public interface QuestionRepository extends CrudRepository<Question, Integer> {
     @Query("select q.questionId, q.askUser.userId, q.askUser.name, " +
             "q.title, q.createDate from Question q " +
             "left outer join q.askUser where q.questionId= ?1")
-    Question findDigestById(Integer questionId);
+    List<Object[]> findDigestById(Integer questionId);
 
 }
