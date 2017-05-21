@@ -33,20 +33,14 @@ public class QuestionController {
 
     @RequestMapping(path = "/ask", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ReturnMsg ask(@RequestParam("userId") String userId,
-                              @RequestParam("password") String password,
-                              @RequestParam("title") String title,
+    public ReturnMsg ask(@RequestParam("title") String title,
                               @RequestParam("content") String content, HttpServletRequest request, HttpServletResponse response) {
-
-        if (!PhoneNumUtil.isPhone(userId)) {
-            response.setStatus(403);
-            return null;
-        }
-        User user = userService.checkUserWithRawPassword(userId, password);
+        User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
-            response.setStatus(404);
+            response.setStatus(401);
             return null;
         }
+
         Question question = new Question();
         question.setAskUser(user);
         question.setContent(content);
@@ -62,20 +56,15 @@ public class QuestionController {
 
     @RequestMapping(path = "/answer", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ReturnMsg answer(@RequestParam("userId") String userId,
-                         @RequestParam("password") String password,
-                         @RequestParam("questionId") Integer questionId,
+    public ReturnMsg answer(@RequestParam("questionId") Integer questionId,
                          @RequestParam("content") String content, HttpServletRequest request, HttpServletResponse response) {
 
-        if (!PhoneNumUtil.isPhone(userId)) {
-            response.setStatus(403);
-            return null;
-        }
-        User user = userService.checkUserWithRawPassword(userId, password);
+        User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
-            response.setStatus(404);
+            response.setStatus(401);
             return null;
         }
+
         Question question = questionService.getQuestionById(questionId);
         if (question == null) {
             response.setStatus(450);
@@ -98,20 +87,15 @@ public class QuestionController {
 
     @RequestMapping(path = "/agreeAnswer", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ReturnMsg agreeAnswer(@RequestParam("userId") String userId,
-                               @RequestParam("password") String password,
-                               @RequestParam("answerId") Integer answerId,
+    public ReturnMsg agreeAnswer(@RequestParam("answerId") Integer answerId,
                                @RequestParam("agreeOrNot") Boolean agreeOrNot, HttpServletRequest request, HttpServletResponse response) {
 
-        if (!PhoneNumUtil.isPhone(userId)) {
-            response.setStatus(403);
-            return null;
-        }
-        User user = userService.checkUserWithRawPassword(userId, password);
+        User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
-            response.setStatus(404);
+            response.setStatus(401);
             return null;
         }
+
         Answer answer = questionService.getAnswerById(answerId);
         if (answer == null) {
             response.setStatus(450);
@@ -124,6 +108,7 @@ public class QuestionController {
         result.put("answerAgreeId", aa.getAnswerAgreeId());
         return result;
     }
+
 
     @RequestMapping(path = "/getAllId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody

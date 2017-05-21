@@ -87,6 +87,7 @@ public class UserController {
             return null;
         }
 
+        request.getSession().setAttribute("user", user);
         response.setStatus(200);
         ReturnMsg result = new ReturnMsg();
         result.put("userId", userId);
@@ -104,9 +105,11 @@ public class UserController {
         }
         User user = userService.checkUserWithRawPassword(userId, password);
         if (user == null) {
-            response.setStatus(404);
+            response.setStatus(400);
             return null;
         }
+
+        request.getSession().setAttribute("user", user);
         ReturnMsg result = new ReturnMsg();
         result.put("userId", userId);
         return result;
@@ -114,22 +117,16 @@ public class UserController {
 
     @RequestMapping(path = "/modifyInfo", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ReturnMsg modifyInfo(@RequestParam("userId") String userId,
-                              @RequestParam("password") String password,
-                              @RequestParam("name") String name,
+    public ReturnMsg modifyInfo(@RequestParam("name") String name,
                               @RequestParam("gender") String gender,
                               @RequestParam("birthDate") String birthDate,
                               @RequestParam("location") String location, HttpServletRequest request, HttpServletResponse response) {
-
-        if (!PhoneNumUtil.isPhone(userId)) {
-            response.setStatus(403);
-            return null;
-        }
-        User user = userService.checkUserWithRawPassword(userId, password);
+        User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
-            response.setStatus(404);
+            response.setStatus(401);
             return null;
         }
+
         try {
             if (!(gender.equals("male") || gender.equals("female"))) {
                 throw new IllegalArgumentException("Gender invalid.");
@@ -146,22 +143,16 @@ public class UserController {
 
         response.setStatus(200);
         ReturnMsg result = new ReturnMsg();
-        result.put("userId", userId);
+        result.put("userId", user.getUserId());
         return result;
     }
 
     @RequestMapping(path = "/info", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ReturnMsg info(@RequestParam("userId") String userId,
-                                @RequestParam("password") String password, HttpServletRequest request, HttpServletResponse response) {
-
-        if (!PhoneNumUtil.isPhone(userId)) {
-            response.setStatus(403);
-            return null;
-        }
-        User user = userService.checkUserWithRawPassword(userId, password);
+    public ReturnMsg info(HttpServletRequest request, HttpServletResponse response) {
+        User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
-            response.setStatus(404);
+            response.setStatus(401);
             return null;
         }
 

@@ -70,7 +70,7 @@ POST参数
 |------|---------|-------------|
 |200|OK|请求成功|
 |403|FORBIDDEN|用户名不是手机号或参数格式错误|
-|404|NOT FOUND|用户名或密码错误|
+|400|NOT FOUND|用户名或密码错误|
 
 URI:
 
@@ -97,8 +97,7 @@ POST参数
 | Code | Content | Description |
 |------|---------|-------------|
 |200|OK|请求成功|
-|404|FAILED|用户名或密码错误|
-|403|FORBIDDEN|用户名不是手机号或参数格式错误|
+|401|FAILED|未登录|
 
 URI:
 
@@ -110,8 +109,6 @@ POST参数
 
 | 字段 | 描述 | 类型 |
 |----------|-------------|------|
-|userId|用户名（手机号）|string|
-|password|密码（未处理）|string|
 |name|姓名|string|
 |gender|性别|string - "male"/"female"|
 |birthDate|出生日期|string - YYYY-MM-DD|
@@ -130,8 +127,7 @@ POST参数
 | Code | Content | Description |
 |------|---------|-------------|
 |200|OK|请求成功|
-|404|FAILED|用户名或密码错误|
-|403|FORBIDDEN|用户名不是手机号或参数格式错误|
+|401|FAILED|未登录|
 
 URI:
 
@@ -139,12 +135,7 @@ URI:
 POST /user/info
 ```
 
-POST参数
-
-| 字段 | 描述 | 类型 |
-|----------|-------------|------|
-|userId|用户名（手机号）|string|
-|password|密码（未处理）|string|
+POST参数：无
 
 
 成功例子：
@@ -166,8 +157,7 @@ POST参数
 | Code | Content | Description |
 |------|---------|-------------|
 |200|OK|请求成功|
-|403|FORBIDDEN|用户名不是手机号或参数格式错误|
-|404|NOT FOUND|用户名或密码错误|
+|401|FAILED|未登录|
 
 URI:
 
@@ -179,8 +169,6 @@ POST参数
 
 | 字段 | 描述 | 类型 |
 |----------|-------------|------|
-|userId|用户名（手机号）|string|
-|password|密码（未处理）|String|
 |title|标题|string|
 |content|提问内容|string|
 
@@ -195,8 +183,7 @@ POST参数
 | Code | Content | Description |
 |------|---------|-------------|
 |200|OK|请求成功|
-|403|FORBIDDEN|用户名不是手机号或参数格式错误|
-|404|NOT FOUND|用户名或密码错误|
+|401|FAILED|未登录|
 |450|MISS|该提问id不存在|
 
 URI:
@@ -209,8 +196,6 @@ POST参数
 
 | 字段 | 描述 | 类型 |
 |----------|-------------|------|
-|userId|用户名（手机号）|string|
-|password|密码（未处理）|String|
 |questionId|问题id|int|
 |content|回答内容|string|
 
@@ -226,8 +211,7 @@ POST参数
 | Code | Content | Description |
 |------|---------|-------------|
 |200|OK|请求成功|
-|403|FORBIDDEN|用户名不是手机号或参数格式错误|
-|404|NOT FOUND|用户名或密码错误|
+|401|FAILED|未登录|
 |450|MISS|该回答id不存在|
 
 URI:
@@ -240,8 +224,6 @@ POST参数
 
 | 字段 | 描述 | 类型 |
 |----------|-------------|------|
-|userId|用户名（手机号）|string|
-|password|密码（未处理）|string|
 |answerId|回答id|int|
 |agreeOrNot|是否赞同|bool - true赞同/false不赞同|
 

@@ -13,6 +13,17 @@
 
     <mvc:annotation-driven/>
 
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/question/*"/>
+            <mvc:mapping path="/user/*"/>
+            <mvc:exclude-mapping path="/user/login"/>
+            <mvc:exclude-mapping path="/user/register"/>
+            <mvc:exclude-mapping path="/user/sendSms/*"/>
+            <bean id="loginInterceptor" class="com.sysu.yizhu.web.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
     <context:component-scan base-package="com.sysu.yizhu"/>
 
     <!-- SpringResourceTemplateResolver automatically integrates with Spring's own -->

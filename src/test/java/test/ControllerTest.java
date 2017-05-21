@@ -6,8 +6,6 @@ import com.sysu.yizhu.business.entities.Question;
 import com.sysu.yizhu.business.entities.User;
 import com.sysu.yizhu.business.services.QuestionService;
 import com.sysu.yizhu.business.services.UserService;
-import com.sysu.yizhu.util.MD5Parser;
-import jdk.internal.instrumentation.InstrumentationTarget;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -28,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Ignore
 public class ControllerTest extends TestBase {
     private static final Logger Log = LoggerFactory.getLogger(ControllerTest.class);
     private User user = null;
