@@ -1,3 +1,4 @@
+[TOC]
 
 
 # 一、用户类
@@ -12,7 +13,7 @@
 URI:
 
 ```
-GET /user/sendSms/:userId
+GET /user/sendSms/{userId}
 ```
 
 GET参数
@@ -326,12 +327,223 @@ GET /question/getAnswer/{answerId}
 ```
 
 
-# 一键求救（推送、导航、评价）
+# 三、一键求救（推送、导航、评价）
+
+## 更新用户installationId（leancloud SDK获取）
+该接口需要登录
+
+| Code | Content | Description |
+|------|---------|-------------|
+|200|OK|请求成功|
+|401|FAILED|未登录|
+|404|MISS|installationId不存在|
+
+URI:
+
+```
+POST /user/updateInstallationId
+```
+
+POST参数
+
+| 字段 | 描述 | 类型 |
+|----------|-------------|------|
+|installationId|安装Id|string|
 
 
-# 求助 （图片、音频、文字、视频、评价）
+成功例子：
+
+```json
+{
+	"userId":"11111111111"
+}
+```
+
+## 更新用户定位位置
+该接口需要登录
+
+| Code | Content | Description |
+|------|---------|-------------|
+|200|OK|请求成功|
+|401|FAILED|未登录|
+|403|FORBIDDEN|纬度不在-90~90或经度不在-180~180间|
+|450|MISS|用户未记录安装Id|
+
+URI:
+
+```
+POST /user/updateLocation
+```
+
+POST参数
+
+| 字段 | 描述 | 类型 |
+|----------|-------------|------|
+|latitude|纬度|double|
+|longitude|经度|double|
+
+成功例子：
+
+```json
+{
+	"userId":"11111111111"
+}
+```
+
+## 发起求救
+该接口需要登录
+
+| Code | Content | Description |
+|------|---------|-------------|
+|200|OK|请求成功|
+|401|FAILED|未登录|
+|450|MISS|用户未记录安装Id|
+
+URI:
+
+```
+POST /sos/push
+```
+
+POST参数
+
+| 字段 | 描述 | 类型 |
+|----------|-------------|------|
+|latitude|纬度|double|
+|longitude|经度|double|
+
+成功例子：
+
+```json
+{
+	"sosId":1
+}
+```
+
+## 响应求救
+该接口需要登录
+
+| Code | Content | Description |
+|------|---------|-------------|
+|200|OK|请求成功|
+|401|FAILED|未登录|
+|404|NOT FOUND|SOS id 不存在或已完成|
+|450|MISS|用户未记录安装Id|
+
+URI:
+
+```
+POST /sos/response
+```
+
+POST参数
+
+| 字段 | 描述 | 类型 |
+|----------|-------------|------|
+|sosId|求救Id|string|
+
+成功例子：
+
+```json
+{
+	"userId":"11111111111"
+}
+```
+
+## 查询所有有效求救id
+| Code | Content | Description |
+|------|---------|-------------|
+|200|OK|请求成功|
+|450|MISS|用户未记录安装Id|
+
+URI:
+
+```
+GET /sos/allValidId
+```
 
 
+成功例子：
+```json
+{
+	"count":2,
+	"data":[1,2]
+}
+```
+
+## 根据sos id获取sos内容
+| Code | Content | Description |
+|------|---------|-------------|
+|200|OK|请求成功|
+|404|NOT FOUND|SOS id 不存在或已完成|
+
+URI:
+
+```
+GET /sos/{sosId}
+```
+
+成功例子：
+```json
+{
+	"sosId": 2,
+	"latitude": 0.0,
+    "longitude": 5.0,
+	"pushUserId": "11111111111"
+}
+```
+
+## 根据sos id获取所有响应者id
+| Code | Content | Description |
+|------|---------|-------------|
+|200|OK|请求成功|
+|404|NOT FOUND|SOS id 不存在或已完成|
+
+URI:
+
+```
+GET /sos/response/{sosId}
+```
 
 
-# 个人基本信息
+成功例子：
+```json
+{
+	"count":2,
+	"data":["1234568911", "12345678922"]
+}
+```
+
+
+## 结束求救
+该接口需要登录
+
+| Code | Content | Description |
+|------|---------|-------------|
+|200|OK|请求成功|
+|401|FAILED|未登录|
+|404|NOT FOUND|SOS id 不存在或已完成|
+|450|MISS|非发起用户无法结束该求救|
+
+URI:
+
+```
+POST /sos/finish
+```
+
+POST参数
+
+| 字段 | 描述 | 类型 |
+|----------|-------------|------|
+|sosId|sos id|integer|
+
+成功例子：
+
+```json
+{
+	"sosId":2
+}
+```
+
+
+# 四、求助 （图片、音频、文字、视频、评价）

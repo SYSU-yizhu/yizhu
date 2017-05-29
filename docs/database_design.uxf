@@ -4,8 +4,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>470</x>
-      <y>100</y>
+      <x>350</x>
+      <y>270</y>
       <w>300</w>
       <h>170</h>
     </coordinates>
@@ -18,14 +18,16 @@ PK    user_id: VARCHAR(11) NOT NULL
    birth_date: DATE NOT NULL
        gender: VARCHAR(8) NOT NULL
      location: VARCHAR(128)
+     latitude: DOUBLE
+    longitude: DOUBLE
    </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>120</x>
-      <y>0</y>
+      <x>0</x>
+      <y>170</y>
       <w>270</w>
       <h>150</h>
     </coordinates>
@@ -45,8 +47,8 @@ Note:
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>380</x>
-      <y>110</y>
+      <x>260</x>
+      <y>280</y>
       <w>110</w>
       <h>40</h>
     </coordinates>
@@ -57,8 +59,8 @@ user_id</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>750</x>
-      <y>320</y>
+      <x>630</x>
+      <y>490</y>
       <w>270</w>
       <h>130</h>
     </coordinates>
@@ -74,8 +76,8 @@ FK       ask_user: user_id
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>620</x>
-      <y>480</y>
+      <x>500</x>
+      <y>650</y>
       <w>260</w>
       <h>160</h>
     </coordinates>
@@ -93,8 +95,8 @@ FK    question_id: question_id
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>810</x>
-      <y>440</y>
+      <x>690</x>
+      <y>610</y>
       <w>100</w>
       <h>60</h>
     </coordinates>
@@ -105,8 +107,8 @@ question_id</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>750</x>
-      <y>260</y>
+      <x>630</x>
+      <y>430</y>
       <w>80</w>
       <h>80</h>
     </coordinates>
@@ -117,8 +119,8 @@ user_id</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>650</x>
-      <y>260</y>
+      <x>530</x>
+      <y>430</y>
       <w>80</w>
       <h>240</h>
     </coordinates>
@@ -129,8 +131,8 @@ user_id</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>270</x>
-      <y>480</y>
+      <x>150</x>
+      <y>650</y>
       <w>260</w>
       <h>160</h>
     </coordinates>
@@ -145,8 +147,8 @@ FK          answer_id: question_id
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>510</x>
-      <y>260</y>
+      <x>390</x>
+      <y>430</y>
       <w>80</w>
       <h>240</h>
     </coordinates>
@@ -157,13 +159,80 @@ user_id</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>520</x>
-      <y>520</y>
+      <x>400</x>
+      <y>690</y>
       <w>120</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=-
 answer_id</panel_attributes>
     <additional_attributes>100.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>760</x>
+      <y>230</y>
+      <w>270</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>SOS
+--
+PK          sos_id: INT NOT NULL
+FK       push_user: user_id
+          finished: BOOL
+       create_date: DATE NOT NULL</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>640</x>
+      <y>260</y>
+      <w>140</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=-
+user_id</panel_attributes>
+    <additional_attributes>120.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>600</x>
+      <y>70</y>
+      <w>270</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Response
+--
+PK     response_id: INT NOT NULL
+FK          sos_id: INT NOT NULL
+FK   response_user: user_id</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>610</x>
+      <y>140</y>
+      <w>80</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=-
+user_id</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>810</x>
+      <y>140</y>
+      <w>70</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=-
+sos_id</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
   </element>
 </diagram>
