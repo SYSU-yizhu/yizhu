@@ -24,9 +24,13 @@ public class QuestionService {
     @Autowired
     private AnswerAgreeRepository answerAgreeRepo;
 
-
-    public void createQuestion(Question question) {
-        questionRepo.save(question);
+    public Question createQuestion(User user, String title, String content) {
+        Question question = new Question();
+        question.setAskUser(user);
+        question.setContent(content);
+        question.setCreateDate(new Date(System.currentTimeMillis()));
+        question.setTitle(title);
+        return questionRepo.save(question);
     }
 
     public Question getQuestionById(Integer questionId) {
@@ -37,12 +41,18 @@ public class QuestionService {
         return answerRepo.findOne(answerId);
     }
 
-    public Answer createAnswer(Answer answer) {
-        if (answer.getQuestion().getQuestionId() == null) {
+    public Answer createAnswer(Question question, User user, String content) {
+        if (question.getQuestionId() == null) {
             return null;
         }
-        answerRepo.save(answer);
-        return answer;
+        Answer answer = new Answer();
+        answer.setQuestion(question);
+        answer.setCreateDate(new Date(System.currentTimeMillis()));
+        answer.setContent(content);
+        answer.setAnswerUser(user);
+        answer.setBad(0);
+        answer.setGood(0);
+        return answerRepo.save(answer);
     }
 
     public AnswerAgree setAgreement(Boolean agreeOrNot, User user, Answer answer) {

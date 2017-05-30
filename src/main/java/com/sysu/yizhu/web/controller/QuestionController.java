@@ -35,18 +35,14 @@ public class QuestionController {
     @ResponseBody
     public ReturnMsg ask(@RequestParam("title") String title,
                               @RequestParam("content") String content, HttpServletRequest request, HttpServletResponse response) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user == null) {
+        String userId = (String)request.getSession().getAttribute("userId");
+        if (userId == null) {
             response.setStatus(401);
             return null;
         }
+        User user = userService.findOne(userId);
 
-        Question question = new Question();
-        question.setAskUser(user);
-        question.setContent(content);
-        question.setCreateDate(new Date(System.currentTimeMillis()));
-        question.setTitle(title);
-        questionService.createQuestion(question);
+        Question question = questionService.createQuestion(user, title, content);
 
         response.setStatus(200);
         ReturnMsg result = new ReturnMsg();
@@ -59,25 +55,19 @@ public class QuestionController {
     public ReturnMsg answer(@RequestParam("questionId") Integer questionId,
                          @RequestParam("content") String content, HttpServletRequest request, HttpServletResponse response) {
 
-        User user = (User) request.getSession().getAttribute("user");
-        if (user == null) {
+        String userId = (String)request.getSession().getAttribute("userId");
+        if (userId == null) {
             response.setStatus(401);
             return null;
         }
+        User user = userService.findOne(userId);
 
         Question question = questionService.getQuestionById(questionId);
         if (question == null) {
             response.setStatus(450);
             return null;
         }
-        Answer answer = new Answer();
-        answer.setQuestion(question);
-        answer.setCreateDate(new Date(System.currentTimeMillis()));
-        answer.setContent(content);
-        answer.setAnswerUser(user);
-        answer.setBad(0);
-        answer.setGood(0);
-        questionService.createAnswer(answer);
+        Answer answer = questionService.createAnswer(question, user, content);
 
         response.setStatus(200);
         ReturnMsg result = new ReturnMsg();
@@ -90,11 +80,12 @@ public class QuestionController {
     public ReturnMsg agreeAnswer(@RequestParam("answerId") Integer answerId,
                                @RequestParam("agreeOrNot") Boolean agreeOrNot, HttpServletRequest request, HttpServletResponse response) {
 
-        User user = (User) request.getSession().getAttribute("user");
-        if (user == null) {
+        String userId = (String)request.getSession().getAttribute("userId");
+        if (userId == null) {
             response.setStatus(401);
             return null;
         }
+        User user = userService.findOne(userId);
 
         Answer answer = questionService.getAnswerById(answerId);
         if (answer == null) {

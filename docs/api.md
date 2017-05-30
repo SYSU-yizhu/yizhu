@@ -1,5 +1,3 @@
-[TOC]
-
 
 # 一、用户类
 
@@ -329,26 +327,26 @@ GET /question/getAnswer/{answerId}
 
 # 三、一键求救（推送、导航、评价）
 
-## 更新用户installationId（leancloud SDK获取）
+## 更新用户objectId（leancloud SDK获取）
 该接口需要登录
 
 | Code | Content | Description |
 |------|---------|-------------|
 |200|OK|请求成功|
 |401|FAILED|未登录|
-|404|MISS|installationId不存在|
+|404|MISS|objectId不存在|
 
 URI:
 
 ```
-POST /user/updateInstallationId
+POST /user/updateObjectId
 ```
 
 POST参数
 
 | 字段 | 描述 | 类型 |
 |----------|-------------|------|
-|installationId|安装Id|string|
+|objectId|安装Id|string|
 
 
 成功例子：
@@ -368,6 +366,7 @@ POST参数
 |401|FAILED|未登录|
 |403|FORBIDDEN|纬度不在-90~90或经度不在-180~180间|
 |450|MISS|用户未记录安装Id|
+|500|Error|服务器错误|
 
 URI:
 
@@ -397,7 +396,9 @@ POST参数
 |------|---------|-------------|
 |200|OK|请求成功|
 |401|FAILED|未登录|
+|403|FORBIDDEN|纬度不在-90~90或经度不在-180~180间|
 |450|MISS|用户未记录安装Id|
+|500|Error|服务器错误|
 
 URI:
 
@@ -475,12 +476,12 @@ GET /sos/allValidId
 | Code | Content | Description |
 |------|---------|-------------|
 |200|OK|请求成功|
-|404|NOT FOUND|SOS id 不存在或已完成|
+|404|NOT FOUND|SOS id 不存在|
 
 URI:
 
 ```
-GET /sos/{sosId}
+GET /sos/get/{sosId}
 ```
 
 成功例子：
@@ -489,6 +490,7 @@ GET /sos/{sosId}
 	"sosId": 2,
 	"latitude": 0.0,
     "longitude": 5.0,
+	"finished":false,
 	"pushUserId": "11111111111"
 }
 ```

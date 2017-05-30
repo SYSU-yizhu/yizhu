@@ -13,9 +13,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (request.getMethod().equals("POST") &&
-                request.getSession().getAttribute("user") == null) {
+                request.getSession().getAttribute("userId") == null) {
             LOG.info("Intercept a request with no user. " + request.getRequestURI());
-            response.setStatus(404);
+            response.setStatus(401);
             return false;
         }
         return true;

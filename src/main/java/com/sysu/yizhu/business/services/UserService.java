@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-/**
- * Created by CrazeWong on 2017/4/15.
- */
+
 @Service
 public class UserService {
 
@@ -43,6 +41,17 @@ public class UserService {
     }
 
     public void updateUserInfo(User user) {
+        userRepo.save(user);
+    }
+
+    public void saveObjectId(User user, String objectId) {
+        user.setObjectId(objectId);
+        userRepo.save(user);
+    }
+
+    public void saveLocation(User user, Double latitude, Double longitude) {
+        user.setLatitude(latitude);
+        user.setLongitude(longitude);
         userRepo.save(user);
     }
 }

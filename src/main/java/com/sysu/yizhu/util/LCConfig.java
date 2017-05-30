@@ -7,26 +7,24 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
-/**
- * Created by CrazeWong on 2017/5/6.
- */
+
 @Configuration
 @ComponentScan({ "com.sysu.yizhu" })
 @PropertySource({ "classpath:leancloud.properties" })
-public class SmsConfig {
+public class LCConfig {
 
     @Autowired
     private Environment env;
 
-    public SmsConfig() {
+    public LCConfig() {
         super();
     }
 
     @Bean
-    public SmsUtil smsUtil() {
+    public LCUtil smsUtil() {
         String id = env.getProperty("X-LC-Id");
         String key = env.getProperty("X-LC-Key");
-        final SmsUtil smsUtil = new SmsUtil(id, key);
-        return smsUtil;
+        final LCUtil LCUtil = new LCUtil(id, key);
+        return LCUtil;
     }
 }

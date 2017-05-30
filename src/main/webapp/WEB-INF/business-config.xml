@@ -43,7 +43,7 @@
             <props>
                 <!-- Hibernate config -->
                 <!-- Dialect could be DIY -->
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+                <prop key="hibernate.dialect">com.sysu.yizhu.util.MySQL5Dialect</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <!-- Show the sqls in console -->
                 <prop key="hibernate.show_sql">true</prop>

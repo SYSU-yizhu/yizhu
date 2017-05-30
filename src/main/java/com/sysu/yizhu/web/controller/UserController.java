@@ -4,7 +4,7 @@ import com.sysu.yizhu.business.entities.User;
 import com.sysu.yizhu.business.services.UserService;
 import com.sysu.yizhu.util.PhoneNumUtil;
 import com.sysu.yizhu.util.ReturnMsg;
-import com.sysu.yizhu.util.SmsUtil;
+import com.sysu.yizhu.util.LCUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private SmsUtil smsUtil;
+    private LCUtil lcUtil;
 
     @RequestMapping(path = "/sendSms/{userId}", method = RequestMethod.GET)
     @ResponseBody
@@ -41,7 +41,7 @@ public class UserController {
             return null;
         }
 
-        smsUtil.sendSmsCode(userId);
+        lcUtil.sendSmsCode(userId);
         response.setStatus(200);
         ReturnMsg result = new ReturnMsg();
         result.put("userId", userId);
@@ -65,7 +65,7 @@ public class UserController {
         } else if (userService.findOne(userId) != null) {
             response.setStatus(400);
             return null;
-        } else if (!smsUtil.checkSmsCode(userId, code)) {
+        } else if (!lcUtil.checkSmsCode(userId, code)) {
             response.setStatus(450);
             return null;
         }
@@ -87,7 +87,7 @@ public class UserController {
             return null;
         }
 
-        request.getSession().setAttribute("user", user);
+        request.getSession().setAttribute("userId", user.getUserId());
         response.setStatus(200);
         ReturnMsg result = new ReturnMsg();
         result.put("userId", userId);
@@ -109,7 +109,7 @@ public class UserController {
             return null;
         }
 
-        request.getSession().setAttribute("user", user);
+        request.getSession().setAttribute("userId", user.getUserId());
         ReturnMsg result = new ReturnMsg();
         result.put("userId", userId);
         return result;
@@ -121,11 +121,12 @@ public class UserController {
                               @RequestParam("gender") String gender,
                               @RequestParam("birthDate") String birthDate,
                               @RequestParam("location") String location, HttpServletRequest request, HttpServletResponse response) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user == null) {
+        String userId = (String)request.getSession().getAttribute("userId");
+        if (userId == null) {
             response.setStatus(401);
             return null;
         }
+        User user = userService.findOne(userId);
 
         try {
             if (!(gender.equals("male") || gender.equals("female"))) {
@@ -150,11 +151,12 @@ public class UserController {
     @RequestMapping(path = "/info", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ReturnMsg info(HttpServletRequest request, HttpServletResponse response) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user == null) {
+        String userId = (String)request.getSession().getAttribute("userId");
+        if (userId == null) {
             response.setStatus(401);
             return null;
         }
+        User user = userService.findOne(userId);
 
         response.setStatus(200);
         ReturnMsg result = new ReturnMsg();
@@ -165,4 +167,58 @@ public class UserController {
         result.put("location", user.getLocation());
         return result;
     }
+
+
+    @RequestMapping(path = "/updateObjectId", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ReturnMsg updateObjectId(@RequestParam("objectId") String objectId, HttpServletRequest request, HttpServletResponse response) {
+        String userId = (String)request.getSession().getAttribute("userId");
+        if (userId == null) {
+            response.setStatus(401);
+            return null;
+        }
+        User user = userService.findOne(userId);
+        if (!lcUtil.checkObjectId(objectId)) {
+            response.setStatus(404);
+            return null;
+        }
+        userService.saveObjectId(user, objectId);
+
+        response.setStatus(200);
+        ReturnMsg result = new ReturnMsg();
+        result.put("userId", user.getUserId());
+        return result;
+    }
+
+    @RequestMapping(path = "/updateLocation", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ReturnMsg updateLocation(@RequestParam("latitude") Double latitude,
+                                    @RequestParam("latitude") Double longitude, HttpServletRequest request, HttpServletResponse response) {
+        String userId = (String)request.getSession().getAttribute("userId");
+        if (userId == null) {
+            response.setStatus(401);
+            return null;
+        }
+        if (latitude > 90 || latitude < -90 || longitude > 180 || longitude < -180) {
+            response.setStatus(403);
+            return null;
+        }
+        User user = userService.findOne(userId);
+        if (user.getObjectId() == null) {
+            response.setStatus(450);
+            return null;
+        }
+
+        if (!lcUtil.putLocation(user.getObjectId(), latitude, longitude)) {
+            response.setStatus(500);
+            return null;
+        }
+        userService.saveLocation(user, latitude, longitude);
+
+        response.setStatus(200);
+        ReturnMsg result = new ReturnMsg();
+        result.put("userId", user.getUserId());
+        return result;
+    }
+
 }

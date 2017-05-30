@@ -15,6 +15,9 @@ public class User {
     private Date birthDate;
     private String gender;
     private String location;
+    private Double latitude;
+    private Double longitude;
+    private String objectId;
 
     public User() {
         super();
@@ -80,5 +83,29 @@ public class User {
     }
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    @Column(name = "latitude")
+    public Double getLatitude() {
+        return latitude;
+    }
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    @Column(name = "longitude")
+    public Double getLongitude() {
+        return longitude;
+    }
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    @Column(name="object_id", length = 32)
+    public String getObjectId() {
+        return objectId;
+    }
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
     }
 }

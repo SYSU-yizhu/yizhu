@@ -57,21 +57,9 @@ public class ControllerTest extends TestBase {
         user.setLocation("至九");
         user = userService.createUserWithRawPassword(user);
 
-        question = new Question();
-        question.setContent("内容");
-        question.setTitle("提问");
-        question.setCreateDate(new Date(System.currentTimeMillis()));
-        question.setAskUser(user);
-        questionService.createQuestion(question);
+        question = questionService.createQuestion(user, "提问", "内容");
 
-        answer = new Answer();
-        answer.setQuestion(question);
-        answer.setAnswerUser(user);
-        answer.setContent("回答");
-        answer.setBad(0);
-        answer.setCreateDate(new Date(System.currentTimeMillis()));
-        answer.setGood(0);
-        questionService.createAnswer(answer);
+        answer = questionService.createAnswer(question, user, "回答");
 
         answerAgree = questionService.setAgreement(Boolean.TRUE, user, answer);
     }
