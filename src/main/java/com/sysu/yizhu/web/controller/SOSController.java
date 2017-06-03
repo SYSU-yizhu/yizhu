@@ -91,7 +91,7 @@ public class SOSController {
 
     @RequestMapping(path = "/response/{sosId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ReturnMsg responsers(@RequestParam("sosId") Integer sosId, HttpServletRequest request, HttpServletResponse response) {
+    public ReturnMsg responsers(@PathVariable Integer sosId, HttpServletRequest request, HttpServletResponse response) {
         SOS sos = sosService.getSOS(sosId);
         if (sos == null) {
             response.setStatus(404);

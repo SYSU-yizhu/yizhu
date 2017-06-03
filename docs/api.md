@@ -455,7 +455,6 @@ POST参数
 | Code | Content | Description |
 |------|---------|-------------|
 |200|OK|请求成功|
-|450|MISS|用户未记录安装Id|
 
 URI:
 

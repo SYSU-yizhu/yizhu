@@ -115,6 +115,23 @@ public class UserController {
         return result;
     }
 
+    @RequestMapping(path = "/logout", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ReturnMsg logout(HttpServletRequest request, HttpServletResponse response) {
+        String userId = (String)request.getSession().getAttribute("userId");
+        if (userId == null) {
+            response.setStatus(401);
+            return null;
+        }
+        request.getSession().removeAttribute("userId");
+
+        response.setStatus(200);
+        ReturnMsg result = new ReturnMsg();
+        result.put("userId", userId);
+        return result;
+    }
+
+
     @RequestMapping(path = "/modifyInfo", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ReturnMsg modifyInfo(@RequestParam("name") String name,
@@ -193,7 +210,7 @@ public class UserController {
     @RequestMapping(path = "/updateLocation", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ReturnMsg updateLocation(@RequestParam("latitude") Double latitude,
-                                    @RequestParam("latitude") Double longitude, HttpServletRequest request, HttpServletResponse response) {
+                                    @RequestParam("longitude") Double longitude, HttpServletRequest request, HttpServletResponse response) {
         String userId = (String)request.getSession().getAttribute("userId");
         if (userId == null) {
             response.setStatus(401);
