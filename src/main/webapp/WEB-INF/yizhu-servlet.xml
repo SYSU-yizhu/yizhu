@@ -65,7 +65,7 @@
     </beans>
 
     <!-- Jenkins配置文件 -->
-    <beans profile="production">
+    <beans profile="jenkins">
         <context:property-placeholder location="classpath:settings-jenkins.properties"/>
     </beans>
 
