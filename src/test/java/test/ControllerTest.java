@@ -26,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Ignore
 public class ControllerTest extends TestBase {
     private static final Logger Log = LoggerFactory.getLogger(ControllerTest.class);
     private User user = null;

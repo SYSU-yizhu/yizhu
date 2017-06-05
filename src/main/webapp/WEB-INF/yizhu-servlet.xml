@@ -64,6 +64,11 @@
         <context:property-placeholder location="classpath:settings-development.properties"/>
     </beans>
 
+    <!-- Jenkins配置文件 -->
+    <beans profile="production">
+        <context:property-placeholder location="classpath:settings-jenkins.properties"/>
+    </beans>
+
     <!-- 生产环境配置文件 -->
     <beans profile="production">
         <context:property-placeholder location="classpath:settings-production.properties"/>
