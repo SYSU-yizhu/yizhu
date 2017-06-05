@@ -9,6 +9,5 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration({"file:src/main/webapp/WEB-INF/yizhu-servlet.xml"})
-@ActiveProfiles(profiles = "development")
 public abstract class TestBase {
 }
