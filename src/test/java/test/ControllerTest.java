@@ -266,6 +266,19 @@ public class ControllerTest extends TestBase {
     }
 
     @Test
+    public void testQuestionGetDetail() throws Exception {
+        mockMvc.perform(get("/question/detail/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("$.questionId").isNumber())
+                .andExpect(jsonPath("$.userId").isString())
+                .andExpect(jsonPath("$.userName").isString())
+                .andExpect(jsonPath("$.title").isString())
+                .andExpect(jsonPath("$.content").isString())
+                .andExpect(jsonPath("$.createDate").isString());
+    }
+
+    @Test
     public void testQuestionGetAnswersId() throws Exception {
         mockMvc.perform(get("/question/getAnswerIds/1"))
                 .andExpect(status().isOk())

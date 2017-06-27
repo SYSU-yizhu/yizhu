@@ -84,7 +84,7 @@ public class QuestionService {
     }
 
     public Question getQuestionDetailById(Integer questionId) {
-        return questionRepo.findOne(questionId);
+        return questionRepo.findWholeById(questionId);
     }
 
     public Question getQuestionDigestById(Integer questionId) {
