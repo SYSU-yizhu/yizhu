@@ -121,6 +121,7 @@ public class SOSController {
         result.put("latitude", sos.getLatitude());
         result.put("longitude", sos.getLongitude());
         result.put("finished", sos.getFinished());
+        result.put("createTime", sos.getCreateTime());
         result.put("pushUserId", sos.getPushUser().getUserId());
         return result;
     }

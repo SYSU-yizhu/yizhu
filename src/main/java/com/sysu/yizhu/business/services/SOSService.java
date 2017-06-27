@@ -8,7 +8,7 @@ import com.sysu.yizhu.business.entities.repositories.SOSRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 @Service
@@ -28,7 +28,7 @@ public class SOSService {
         SOS sos = new SOS();
         sos.setPushUser(user);
         sos.setFinished(Boolean.FALSE);
-        sos.setCreateDate(new Date(System.currentTimeMillis()));
+        sos.setCreateTime(new Time(System.currentTimeMillis()));
         sos.setLatitude(latitude);
         sos.setLongitude(longitude);
         return sosRepo.save(sos);

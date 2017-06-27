@@ -1,7 +1,7 @@
 package com.sysu.yizhu.business.entities;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.sql.Time;
 
 @Entity
 @Table(name="sos")
@@ -9,7 +9,7 @@ public class SOS {
     private Integer sosId;
     private User pushUser;
     private Boolean finished;
-    private Date createDate;
+    private Time createTime;
     private Double latitude;
     private Double longitude;
 
@@ -43,12 +43,12 @@ public class SOS {
         this.finished = finished;
     }
 
-    @Column(name="create_date", nullable = false)
-    public Date getCreateDate() {
-        return createDate;
+    @Column(name="create_time", nullable = false)
+    public Time getCreateTime() {
+        return createTime;
     }
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreateTime(Time createTime) {
+        this.createTime = createTime;
     }
 
     @Column(name = "latitude")

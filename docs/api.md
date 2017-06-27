@@ -489,6 +489,7 @@ GET /sos/get/{sosId}
 	"sosId": 2,
 	"latitude": 0.0,
     "longitude": 5.0,
+	"createTime":"2017-06-27 10:15",
 	"finished":false,
 	"pushUserId": "11111111111"
 }
@@ -572,7 +573,8 @@ POST参数
 |----------|-------------|------|
 |latitude|纬度|double|
 |longitude|经度|double|
-|event|事件|string|
+|title|事件标题|string|
+|detail|事件信息|string|
 |needs|需要多少帮助者|integer|
 
 成功例子：
@@ -653,7 +655,8 @@ GET /help/get/{helpId}
 	"latitude": 0.0,
     "longitude": 5.0,
 	"finished":false,
-	"event":"抬三袋米上五楼",
+	"title":"帮忙抬米",
+	"detail":"抬三袋米上五楼",
 	"needs":3,
 	"responseNum":2,
 	"pushUserId": "11111111111"
