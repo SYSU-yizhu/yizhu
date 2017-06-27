@@ -547,4 +547,167 @@ POST参数
 ```
 
 
-# 四、求助 （图片、音频、文字、视频、评价）
+# 四、求助 （图片、文字、评价）
+## 发起求助
+该接口需要登录
+
+| Code | Content | Description |
+|------|---------|-------------|
+|200|OK|请求成功|
+|401|FAILED|未登录|
+|402|WRONG|需求人数无效，应在1-10人之间|
+|403|FORBIDDEN|纬度不在-90~90或经度不在-180~180间|
+|450|MISS|用户未记录安装Id|
+|500|Error|服务器错误|
+
+URI:
+
+```
+POST /help/push
+```
+
+POST参数
+
+| 字段 | 描述 | 类型 |
+|----------|-------------|------|
+|latitude|纬度|double|
+|longitude|经度|double|
+|event|事件|string|
+|needs|需要多少帮助者|integer|
+
+成功例子：
+
+```json
+{
+	"helpId":1
+}
+```
+
+## 响应求助
+该接口需要登录
+
+| Code | Content | Description |
+|------|---------|-------------|
+|200|OK|请求成功|
+|401|FAILED|未登录|
+|402|WRONG|该求助人数已满|
+|404|NOT FOUND|Help id 不存在或已完成|
+|450|MISS|用户未记录安装Id|
+
+URI:
+
+```
+POST /help/response
+```
+
+POST参数
+
+| 字段 | 描述 | 类型 |
+|----------|-------------|------|
+|sosId|求救Id|string|
+
+成功例子：
+
+```json
+{
+	"userId":"11111111111"
+}
+```
+
+## 查询所有有效求助id
+| Code | Content | Description |
+|------|---------|-------------|
+|200|OK|请求成功|
+
+URI:
+
+```
+GET /help/allValidId
+```
+
+
+成功例子：
+```json
+{
+	"count":2,
+	"data":[1,2]
+}
+```
+
+## 根据help id获取求助内容
+| Code | Content | Description |
+|------|---------|-------------|
+|200|OK|请求成功|
+|404|NOT FOUND|Help id 不存在|
+
+URI:
+
+```
+GET /help/get/{helpId}
+```
+
+成功例子：
+```json
+{
+	"helpId": 2,
+	"latitude": 0.0,
+    "longitude": 5.0,
+	"finished":false,
+	"event":"抬三袋米上五楼",
+	"needs":3,
+	"responseNum":2,
+	"pushUserId": "11111111111"
+}
+```
+
+## 根据help id获取所有响应者id
+| Code | Content | Description |
+|------|---------|-------------|
+|200|OK|请求成功|
+|404|NOT FOUND|Help id 不存在或已完成|
+
+URI:
+
+```
+GET /help/response/{helpId}
+```
+
+
+成功例子：
+```json
+{
+	"count":2,
+	"data":["1234568911", "12345678922"]
+}
+```
+
+
+## 结束求助
+该接口需要登录
+
+| Code | Content | Description |
+|------|---------|-------------|
+|200|OK|请求成功|
+|401|FAILED|未登录|
+|404|NOT FOUND|Help id 不存在或已完成|
+|450|MISS|非发起用户无法结束该求救|
+
+URI:
+
+```
+POST /help/finish
+```
+
+POST参数
+
+| 字段 | 描述 | 类型 |
+|----------|-------------|------|
+|helpId|help id|integer|
+
+成功例子：
+
+```json
+{
+	"helpId":2
+}
+```

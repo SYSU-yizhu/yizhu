@@ -35,7 +35,7 @@ public class Question {
         this.askUser = askUser;
     }
 
-    @Column(name="title", length = 32, nullable = false)
+    @Column(name="title", length = 128, nullable = false)
     public String getTitle() {
         return title;
     }
