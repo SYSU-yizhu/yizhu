@@ -84,6 +84,21 @@ public class LCUtil {
         }
     }
 
+    public boolean pushHelp(Double latitude, Double longitude) {
+        try {
+            HttpEntity<String> reqEntity = new HttpEntity<String>(
+                    getPushHelpJSON(latitude, longitude, 100.0, "一条新的求助消息！"),
+                    headers);
+            String res = restTemplate.postForObject(URL_PUSH, reqEntity, String.class);
+            LOG.info("pushSOS() res: " + res);
+            return true;
+        } catch (HttpClientErrorException e) {
+            LOG.error("pushSOS() res: " + e.getMessage());
+            LOG.error("pushSOS() res: " + e.getResponseBodyAsString());
+            return false;
+        }
+    }
+
     public boolean sendSmsCode(String phoneNum) {
         try {
             String body = new ReqSmsParam(phoneNum).toJSON();
@@ -165,6 +180,30 @@ public class LCUtil {
             "}";
 
     private String getPushSOSJSON(Double latitude, Double longitude, Double maxDistance, String alertContent) {
+        return REQ_PUSH_SOS_TEMPLATE.replace("{latitude}", latitude.toString())
+                .replace("{longitude}", longitude.toString())
+                .replace("{maxDistance}", maxDistance.toString())
+                .replace("{alertContent}", alertContent);
+    }
+
+    private static final String REQ_PUSH_HELP_TEMPLATE =
+            "{\n" +
+                    "    \"where\": {\n" +
+                    "          \"location\": {\n" +
+                    "            \"$nearSphere\": {\n" +
+                    "              \"__type\": \"GeoPoint\",\n" +
+                    "              \"latitude\": {latitude},\n" +
+                    "              \"longitude\": {longitude}\n" +
+                    "            },\n" +
+                    "            \"$maxDistanceInMiles\": {maxDistance}\n" +
+                    "          }\n" +
+                    "    },\n" +
+                    "    \"data\": {\n" +
+                    "        \"alert\": \"{alertContent}\"\n" +
+                    "    }\n" +
+                    "}";
+
+    private String getPushHelpJSON(Double latitude, Double longitude, Double maxDistance, String alertContent) {
         return REQ_PUSH_SOS_TEMPLATE.replace("{latitude}", latitude.toString())
                 .replace("{longitude}", longitude.toString())
                 .replace("{maxDistance}", maxDistance.toString())

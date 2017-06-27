@@ -9,6 +9,7 @@ import com.sysu.yizhu.business.services.SOSService;
 import com.sysu.yizhu.business.services.UserService;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Ignore
 public class PushControllerTest  extends TestBase {
     private static final Logger Log = LoggerFactory.getLogger(PushControllerTest.class);
 

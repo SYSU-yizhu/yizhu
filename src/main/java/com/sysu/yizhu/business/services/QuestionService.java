@@ -7,6 +7,7 @@ import com.sysu.yizhu.business.entities.User;
 import com.sysu.yizhu.business.entities.repositories.AnswerAgreeRepository;
 import com.sysu.yizhu.business.entities.repositories.AnswerRepository;
 import com.sysu.yizhu.business.entities.repositories.QuestionRepository;
+import com.sysu.yizhu.business.entities.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ public class QuestionService {
 
     @Autowired
     private AnswerAgreeRepository answerAgreeRepo;
+
 
     public Question createQuestion(User user, String title, String content) {
         Question question = new Question();

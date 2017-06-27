@@ -1,8 +1,8 @@
 package com.sysu.yizhu.web.controller;
 
-import com.sysu.yizhu.business.entities.SOS;
+import com.sysu.yizhu.business.entities.Help;
 import com.sysu.yizhu.business.entities.User;
-import com.sysu.yizhu.business.services.SOSService;
+import com.sysu.yizhu.business.services.HelpService;
 import com.sysu.yizhu.business.services.UserService;
 import com.sysu.yizhu.util.LCUtil;
 import com.sysu.yizhu.util.ReturnMsg;
@@ -18,10 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
-@RequestMapping("/sos")
-public class SOSController {
-
-    private static final Logger LOG = LoggerFactory.getLogger(SOSController.class);
+@RequestMapping("/help")
+public class HelpController {
+    private static final Logger LOG = LoggerFactory.getLogger(HelpController.class);
 
     @Autowired
     private UserService userService;
@@ -30,13 +29,16 @@ public class SOSController {
     private LCUtil lcUtil;
 
     @Autowired
-    private SOSService sosService;
+    private HelpService helpService;
 
 
     @RequestMapping(path = "/push", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ReturnMsg push(@RequestParam("latitude") Double latitude,
-                          @RequestParam("longitude") Double longitude, HttpServletRequest request, HttpServletResponse response) {
+                          @RequestParam("longitude") Double longitude,
+                          @RequestParam("title") String title,
+                          @RequestParam("detail") String detail,
+                          @RequestParam("needs") Integer needs, HttpServletRequest request, HttpServletResponse response) {
         String userId = (String)request.getSession().getAttribute("userId");
         if (userId == null) {
             response.setStatus(401);
@@ -46,27 +48,31 @@ public class SOSController {
             response.setStatus(403);
             return null;
         }
+        if (needs < 1 || needs > 10) {
+            response.setStatus(402);
+            return null;
+        }
         User user = userService.findOne(userId);
         if (user.getObjectId() == null) {
             response.setStatus(450);
             return null;
         }
 
-        if (!lcUtil.pushSOS(latitude, longitude)) {
+        if (!lcUtil.pushHelp(latitude, longitude)) {
             response.setStatus(500);
             return null;
         }
-        SOS sos = sosService.createPushSOS(user, latitude, longitude);
+        Help help = helpService.createPushHelp(user, latitude, longitude, title, detail, needs);
 
         response.setStatus(200);
         ReturnMsg result = new ReturnMsg();
-        result.put("sosId", sos.getSosId());
+        result.put("helpId", help.getHelpId());
         return result;
     }
 
     @RequestMapping(path = "/response", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ReturnMsg response(@RequestParam("sosId") Integer sosId, HttpServletRequest request, HttpServletResponse response) {
+    public ReturnMsg response(@RequestParam("helpId") Integer helpId, HttpServletRequest request, HttpServletResponse response) {
         String userId = (String)request.getSession().getAttribute("userId");
         if (userId == null) {
             response.setStatus(401);
@@ -77,27 +83,30 @@ public class SOSController {
             response.setStatus(450);
             return null;
         }
-        SOS sos = sosService.getSOS(sosId);
-        if (sos == null || sos.getFinished().equals(Boolean.TRUE)) {
+        Help help = helpService.getHelp(helpId);
+        if (help == null || help.getFinished().equals(Boolean.TRUE)) {
             response.setStatus(404);
             return null;
+        } else if (help.getNeeds().equals(help.getResponseNum())) {
+            response.setStatus(402);
+            return null;
         }
-        sosService.createResponse(user, sos);
+        helpService.createResponse(user, help);
         response.setStatus(200);
         ReturnMsg result = new ReturnMsg();
         result.put("userId", user.getUserId());
         return result;
     }
 
-    @RequestMapping(path = "/response/{sosId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(path = "/response/{helpId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ReturnMsg responsers(@PathVariable Integer sosId, HttpServletRequest request, HttpServletResponse response) {
-        SOS sos = sosService.getSOS(sosId);
-        if (sos == null) {
+    public ReturnMsg responsers(@PathVariable Integer helpId, HttpServletRequest request, HttpServletResponse response) {
+        Help help = helpService.getHelp(helpId);
+        if (help == null) {
             response.setStatus(404);
             return null;
         }
-        List<String> res = sosService.getAllResponserBySOSId(sosId);
+        List<String> res = helpService.getAllResponserByHelpId(helpId);
 
         response.setStatus(200);
         ReturnMsg result = new ReturnMsg();
@@ -106,30 +115,34 @@ public class SOSController {
         return result;
     }
 
-    @RequestMapping(path = "/get/{sosId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(path = "/get/{helpId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ReturnMsg get(@PathVariable Integer sosId, HttpServletRequest request, HttpServletResponse response) {
-        SOS sos = sosService.getSOSWithUserById(sosId);
-        if (sos == null) {
+    public ReturnMsg get(@PathVariable Integer helpId, HttpServletRequest request, HttpServletResponse response) {
+        Help help = helpService.getHelpWithUserById(helpId);
+        if (help == null) {
             response.setStatus(404);
             return null;
         }
 
         response.setStatus(200);
         ReturnMsg result = new ReturnMsg();
-        result.put("sosId", sos.getSosId());
-        result.put("latitude", sos.getLatitude());
-        result.put("longitude", sos.getLongitude());
-        result.put("finished", sos.getFinished());
-        result.put("createTime", sos.getCreateTime());
-        result.put("pushUserId", sos.getPushUser().getUserId());
+        result.put("helpId", help.getHelpId());
+        result.put("latitude", help.getLatitude());
+        result.put("longitude", help.getLongitude());
+        result.put("finished", help.getFinished());
+        result.put("title", help.getTitle());
+        result.put("detail", help.getDetail());
+        result.put("needs", help.getNeeds());
+        result.put("responseNum", help.getResponseNum());
+        result.put("createTime", help.getCreateTime());
+        result.put("pushUserId", help.getPushUser().getUserId());
         return result;
     }
 
     @RequestMapping(path = "/allValidId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ReturnMsg allValidId(HttpServletRequest request, HttpServletResponse response) {
-        List<Integer> res = sosService.getAllValidSOSId();
+        List<Integer> res = helpService.getAllValidHelpId();
 
         response.setStatus(200);
         ReturnMsg result = new ReturnMsg();
@@ -140,28 +153,28 @@ public class SOSController {
 
     @RequestMapping(path = "/finish", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ReturnMsg finish(@RequestParam("sosId") Integer sosId, HttpServletRequest request, HttpServletResponse response) {
+    public ReturnMsg finish(@RequestParam("helpId") Integer helpId, HttpServletRequest request, HttpServletResponse response) {
         String userId = (String)request.getSession().getAttribute("userId");
         if (userId == null) {
             response.setStatus(401);
             return null;
         }
-        SOS sos = sosService.getSOSWithUserById(sosId);
-        if (sos == null) {
+        Help help = helpService.getHelpWithUserById(helpId);
+        if (help == null) {
             response.setStatus(404);
             return null;
         }
 
         User user = userService.findOne(userId);
-        if (user.getObjectId() == null || !sos.getPushUser().getUserId().equals(user.getUserId())) {
+        if (user.getObjectId() == null || !help.getPushUser().getUserId().equals(user.getUserId())) {
             response.setStatus(450);
             return null;
         }
 
-        sosService.finishSOS(sos);
+        helpService.finishHelp(help);
         response.setStatus(200);
         ReturnMsg result = new ReturnMsg();
-        result.put("sosId", sos.getSosId());
+        result.put("helpId", help.getHelpId());
         return result;
     }
 }

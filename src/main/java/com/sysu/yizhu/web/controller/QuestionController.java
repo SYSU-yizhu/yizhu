@@ -136,7 +136,7 @@ public class QuestionController {
     @RequestMapping(path = "/detail/{questionId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ReturnMsg getDetail(@PathVariable Integer questionId, HttpServletRequest request, HttpServletResponse response) {
-        Question question = questionService.getQuestionById(questionId);
+        Question question = questionService.getQuestionDetailById(questionId);
         if (question == null) {
             response.setStatus(404);
             return null;

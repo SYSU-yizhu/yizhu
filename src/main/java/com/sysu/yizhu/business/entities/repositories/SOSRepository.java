@@ -13,7 +13,7 @@ public interface SOSRepository extends CrudRepository<SOS, Integer> {
     @Query("select s.sosId from SOS s where s.finished = ?1")
     List<Integer> findAllSOSIdByFinished(Boolean finished);
 
-    @Query("from SOS s left outer join s.pushUser where s.sosId= ?1")
+    @Query("from SOS s left outer join fetch s.pushUser where s.sosId= ?1")
     SOS findWithUserById(Integer sosId);
 
 }
