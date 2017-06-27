@@ -124,6 +124,7 @@ public class HelpController {
             return null;
         }
 
+        LOG.info(help.getResponseNum().toString());
         response.setStatus(200);
         ReturnMsg result = new ReturnMsg();
         result.put("helpId", help.getHelpId());

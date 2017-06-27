@@ -34,6 +34,7 @@ public class HelpService {
         help.setTitle(title);
         help.setDetail(detail);
         help.setNeeds(needs);
+        help.setResponseNum(0);
         return helpRepo.save(help);
     }
 
