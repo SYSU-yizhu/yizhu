@@ -133,6 +133,27 @@ public class QuestionController {
         return result;
     }
 
+    @RequestMapping(path = "/detail/{questionId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ReturnMsg getDetail(@PathVariable Integer questionId, HttpServletRequest request, HttpServletResponse response) {
+        Question question = questionService.getQuestionById(questionId);
+        if (question == null) {
+            response.setStatus(404);
+            return null;
+        }
+
+        response.setStatus(200);
+        ReturnMsg result = new ReturnMsg();
+        result.put("questionId", question.getQuestionId());
+        result.put("userId", question.getAskUser().getUserId());
+        result.put("userName", question.getAskUser().getName());
+        result.put("title", question.getTitle());
+        result.put("content", question.getContent());
+        result.put("createDate", question.getCreateDate().toString());
+
+        return result;
+    }
+
     @RequestMapping(path = "/getAnswerIds/{questionId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public ReturnMsg getAnswers(@PathVariable Integer questionId, HttpServletRequest request, HttpServletResponse response) {

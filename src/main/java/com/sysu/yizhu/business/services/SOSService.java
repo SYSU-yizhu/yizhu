@@ -1,9 +1,9 @@
 package com.sysu.yizhu.business.services;
 
-import com.sysu.yizhu.business.entities.Response;
+import com.sysu.yizhu.business.entities.SOSResponse;
 import com.sysu.yizhu.business.entities.SOS;
 import com.sysu.yizhu.business.entities.User;
-import com.sysu.yizhu.business.entities.repositories.ResponseRepository;
+import com.sysu.yizhu.business.entities.repositories.SOSResponseRepository;
 import com.sysu.yizhu.business.entities.repositories.SOSRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class SOSService {
     private SOSRepository sosRepo;
 
     @Autowired
-    private ResponseRepository responseRepo;
+    private SOSResponseRepository sosResponseRepo;
 
     public SOS getSOS(Integer sosId) {
         return sosRepo.findOne(sosId);
@@ -39,11 +39,11 @@ public class SOSService {
         sosRepo.save(sos);
     }
 
-    public Response createResponse(User user, SOS sos) {
-        Response response = new Response();
-        response.setResponseUser(user);
-        response.setSos(sos);
-        return responseRepo.save(response);
+    public SOSResponse createResponse(User user, SOS sos) {
+        SOSResponse sosResponse = new SOSResponse();
+        sosResponse.setSosResponseUser(user);
+        sosResponse.setSos(sos);
+        return sosResponseRepo.save(sosResponse);
     }
 
     public List<Integer> getAllValidSOSId() {
@@ -55,6 +55,6 @@ public class SOSService {
     }
 
     public List<String> getAllResponserBySOSId(Integer sosId) {
-        return responseRepo.findAllUserIdBySOSId(sosId);
+        return sosResponseRepo.findAllUserIdBySOSId(sosId);
     }
 }

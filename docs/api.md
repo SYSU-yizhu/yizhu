@@ -277,6 +277,31 @@ GET /question/digest/{questionId}
 }
 ```
 
+## 根据问题Id获取完整问题内容
+| Code | Content | Description |
+|------|---------|-------------|
+|200|OK|请求成功|
+|404|NOT FOUND| questionId不存在|
+
+URI:
+
+```
+GET /question/detail/{questionId}
+```
+
+
+成功例子：
+```json
+{
+	"questionId":1,
+	"userId":"133133123456",
+	"userName":"张三",
+	"title":"扶老奶奶过马路是一种怎样的体验？",
+	"content":"bla bla blabla",
+	"createDate":"2017-05-17"
+}
+```
+
 ## 根据问题Id获取回答所有Id
 | Code | Content | Description |
 |------|---------|-------------|
@@ -515,7 +540,6 @@ GET /sos/response/{sosId}
 	"data":["1234568911", "12345678922"]
 }
 ```
-
 
 ## 结束求救
 该接口需要登录

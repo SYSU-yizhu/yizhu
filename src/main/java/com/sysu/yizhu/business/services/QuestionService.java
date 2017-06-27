@@ -83,6 +83,10 @@ public class QuestionService {
         return questionRepo.findAllId();
     }
 
+    public Question getQuestionDetailById(Integer questionId) {
+        return questionRepo.findOne(questionId);
+    }
+
     public Question getQuestionDigestById(Integer questionId) {
         List<Object[]> objs = questionRepo.findDigestById(questionId);
         Question question = new Question();
