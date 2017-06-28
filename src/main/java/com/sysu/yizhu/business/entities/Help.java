@@ -87,7 +87,7 @@ public class Help {
         this.detail = detail;
     }
 
-    @Column(name = "needs")
+    @Column(name = "needs", nullable = false)
     public Integer getNeeds() {
         return needs;
     }
@@ -95,7 +95,7 @@ public class Help {
         this.needs = needs;
     }
 
-    @Column(name = "response_num")
+    @Column(name = "response_num", nullable = false)
     public Integer getResponseNum() {
         return responseNum;
     }
