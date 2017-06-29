@@ -78,10 +78,16 @@ public class SOSController {
             return null;
         }
         SOS sos = sosService.getSOS(sosId);
+        if (sosService.hasResponsed(sos, user)) {
+            response.setStatus(403);
+            return null;
+        }
+
         if (sos == null || sos.getFinished().equals(Boolean.TRUE)) {
             response.setStatus(404);
             return null;
         }
+
         sosService.createResponse(user, sos);
         response.setStatus(200);
         ReturnMsg result = new ReturnMsg();

@@ -1,6 +1,7 @@
 package com.sysu.yizhu.business.services;
 
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.sysu.yizhu.business.entities.Help;
 import com.sysu.yizhu.business.entities.HelpResponse;
 import com.sysu.yizhu.business.entities.User;
@@ -61,5 +62,9 @@ public class HelpService {
 
     public List<String> getAllResponserByHelpId(Integer helpId) {
         return helpResponseRepo.findAllUserIdByHelpId(helpId);
+    }
+
+    public Boolean hasResponsed(Help help, User user) {
+        return helpResponseRepo.findByHelpAndHelpResponseUser(help, user).size() != 0;
     }
 }

@@ -27,7 +27,7 @@ public class Question {
     }
 
     @ManyToOne(cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     public User getAskUser() {
         return askUser;
     }

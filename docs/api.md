@@ -97,6 +97,7 @@ POST参数
 |------|---------|-------------|
 |200|OK|请求成功|
 |401|FAILED|未登录|
+|403|FORBIDDEN|性别或日期参数格式不正确|
 
 URI:
 
@@ -149,6 +150,67 @@ POST参数：无
 }
 ```
 
+## （推送）更新用户objectId（leancloud SDK获取）
+该接口需要登录
+
+| Code | Content | Description |
+|------|---------|-------------|
+|200|OK|请求成功|
+|401|FAILED|未登录|
+|404|MISS|objectId不存在|
+
+URI:
+
+```
+POST /user/updateObjectId
+```
+
+POST参数
+
+| 字段 | 描述 | 类型 |
+|----------|-------------|------|
+|objectId|安装Id|string|
+
+
+成功例子：
+
+```json
+{
+	"userId":"11111111111"
+}
+```
+
+## （推送）更新用户定位位置
+该接口需要登录
+
+| Code | Content | Description |
+|------|---------|-------------|
+|200|OK|请求成功|
+|401|FAILED|未登录|
+|403|FORBIDDEN|纬度不在-90~90或经度不在-180~180间|
+|450|MISS|用户未记录安装Id|
+|500|Error|服务器错误|
+
+URI:
+
+```
+POST /user/updateLocation
+```
+
+POST参数
+
+| 字段 | 描述 | 类型 |
+|----------|-------------|------|
+|latitude|纬度|double|
+|longitude|经度|double|
+
+成功例子：
+
+```json
+{
+	"userId":"11111111111"
+}
+```
 
 # 二、提问类
 
@@ -352,67 +414,7 @@ GET /question/getAnswer/{answerId}
 
 # 三、一键求救（推送、导航、评价）
 
-## 更新用户objectId（leancloud SDK获取）
-该接口需要登录
 
-| Code | Content | Description |
-|------|---------|-------------|
-|200|OK|请求成功|
-|401|FAILED|未登录|
-|404|MISS|objectId不存在|
-
-URI:
-
-```
-POST /user/updateObjectId
-```
-
-POST参数
-
-| 字段 | 描述 | 类型 |
-|----------|-------------|------|
-|objectId|安装Id|string|
-
-
-成功例子：
-
-```json
-{
-	"userId":"11111111111"
-}
-```
-
-## 更新用户定位位置
-该接口需要登录
-
-| Code | Content | Description |
-|------|---------|-------------|
-|200|OK|请求成功|
-|401|FAILED|未登录|
-|403|FORBIDDEN|纬度不在-90~90或经度不在-180~180间|
-|450|MISS|用户未记录安装Id|
-|500|Error|服务器错误|
-
-URI:
-
-```
-POST /user/updateLocation
-```
-
-POST参数
-
-| 字段 | 描述 | 类型 |
-|----------|-------------|------|
-|latitude|纬度|double|
-|longitude|经度|double|
-
-成功例子：
-
-```json
-{
-	"userId":"11111111111"
-}
-```
 
 ## 发起求救
 该接口需要登录
@@ -453,6 +455,7 @@ POST参数
 |------|---------|-------------|
 |200|OK|请求成功|
 |401|FAILED|未登录|
+|403|FORBIDDEN|已响应，不能重复响应|
 |404|NOT FOUND|SOS id 不存在或已完成|
 |450|MISS|用户未记录安装Id|
 
@@ -617,6 +620,7 @@ POST参数
 |200|OK|请求成功|
 |401|FAILED|未登录|
 |402|WRONG|该求助人数已满|
+|403|FORBIDDEN|已响应，不能重复响应|
 |404|NOT FOUND|Help id 不存在或已完成|
 |450|MISS|用户未记录安装Id|
 

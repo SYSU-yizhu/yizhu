@@ -57,4 +57,9 @@ public class SOSService {
     public List<String> getAllResponserBySOSId(Integer sosId) {
         return sosResponseRepo.findAllUserIdBySOSId(sosId);
     }
+
+    public Boolean hasResponsed(SOS sos, User user) {
+        return sosResponseRepo.findBySosAndSosResponseUser(sos, user).size() != 0;
+    }
+
 }

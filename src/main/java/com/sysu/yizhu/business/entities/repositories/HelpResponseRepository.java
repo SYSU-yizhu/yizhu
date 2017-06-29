@@ -1,6 +1,8 @@
 package com.sysu.yizhu.business.entities.repositories;
 
+import com.sysu.yizhu.business.entities.Help;
 import com.sysu.yizhu.business.entities.HelpResponse;
+import com.sysu.yizhu.business.entities.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -12,4 +14,6 @@ public interface HelpResponseRepository extends CrudRepository<HelpResponse, Int
 
     @Query("select r.helpResponseUser.userId from HelpResponse r where r.help.helpId = ?1")
     List<String> findAllUserIdByHelpId(Integer sosId);
+
+    List<HelpResponse> findByHelpAndHelpResponseUser(Help help, User user);
 }

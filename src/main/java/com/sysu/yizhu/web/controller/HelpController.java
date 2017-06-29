@@ -84,6 +84,10 @@ public class HelpController {
             return null;
         }
         Help help = helpService.getHelp(helpId);
+        if (helpService.hasResponsed(help, user)) {
+            response.setStatus(403);
+            return null;
+        }
         if (help == null || help.getFinished().equals(Boolean.TRUE)) {
             response.setStatus(404);
             return null;
@@ -91,6 +95,7 @@ public class HelpController {
             response.setStatus(402);
             return null;
         }
+
         helpService.createResponse(user, help);
         response.setStatus(200);
         ReturnMsg result = new ReturnMsg();
