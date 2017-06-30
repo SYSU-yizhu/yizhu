@@ -49,6 +49,7 @@ public class HelpService {
         helpResponse.setHelpResponseUser(user);
         helpResponse.setHelp(help);
         help.setResponseNum(help.getResponseNum()+1);
+        helpRepo.save(help);
         return helpResponseRepo.save(helpResponse);
     }
 

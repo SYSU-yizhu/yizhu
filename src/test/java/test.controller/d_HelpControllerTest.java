@@ -155,6 +155,10 @@ public class d_HelpControllerTest extends ControllerTestBase {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").isString());
 
+        mockMvc.perform(get("/help/get/" + helpId.toString()))
+                .andExpect(status().is(200))
+                .andExpect(jsonPath("$.responseNum").value("1"));
+
         mockMvc.perform(post("/help/response")
                 .session(session1)
                 .param("helpId", helpId.toString()))
