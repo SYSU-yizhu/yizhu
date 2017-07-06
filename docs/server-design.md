@@ -162,23 +162,4 @@ db.jdbcUrl
 
 
 ## 7. 系统运行部署
-
-### 7.1 项目github地址
-```
-https://github.com/SYSU-yizhu/yizhu
-```
-
-### 7.2 mysql数据库设置
-```
-见本文档 6.3 配置文件，配置数据库端口
-```
-
-### 7.3 运行
-```
-# 如使用production配置
-# 进入yizhu项目文件夹，运行命令行
-mvn clean package tomcat7:run -Dspring.profiles.active=production
-```
-
-### 7.4 集成环境配置，见博客
-[简单CI 多docker连接](http://119.29.166.163/index.php/2017/06/28/jenkins-%E7%AE%80%E5%8D%95ci-%E5%A4%9Adocker%E8%BF%9E%E6%8E%A5/)
+见 《部署文档》
